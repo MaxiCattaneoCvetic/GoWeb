@@ -25,7 +25,7 @@ type (
 	}
 )
 
-func newRepo(db DB, log *log.Logger) Repository {
+func NewRepo(db DB, log *log.Logger) Repository {
 	return &repo{
 		db:  db,
 		log: log,
