@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json" // con eso transformamos una estructura a json
 	"fmt"
-	"goWeb/v2/internal/domain"
 	"net/http"
 )
 
@@ -30,12 +29,12 @@ func MakeEndpoints(ctx context.Context, s Service) Controller {
 			GetAllUsers(ctx, s, w)
 		case http.MethodPost:
 			decode := json.NewDecoder(r.Body) // decodificamos el body
-			var user domain.User
-			if err := decode.Decode(&user); err != nil {
+			var req CreateRequest
+			if err := decode.Decode(&req); err != nil {
 				MsgResponse(w, http.StatusBadRequest, err.Error())
 				return
 			}
-			PostUser(ctx, s, w, user)
+			PostUser(ctx, s, w, req)
 		default:
 			InvalidMethod(w)
 		}
