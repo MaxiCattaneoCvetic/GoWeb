@@ -17,6 +17,8 @@ type (
 
 		Create(ctx context.Context, firstName, Lastname, email string) (*domain.User, error) // recibe un contexto y datos de un usuario -> enviamos a doman
 		GetAll(ctx context.Context) ([]domain.User, error)
+		Get(ctx context.Context, id uint64) (*domain.User, error)
+		Update(ctx context.Context, id uint64, firstName, lastName, email *string) error
 	}
 
 	service struct {
@@ -56,5 +58,16 @@ func (s service) GetAll(ctx context.Context) ([]domain.User, error) {
 	}
 	s.log.Println("Service log: Get all users")
 	return users, nil
+}
 
+func (service service) Get(ctx context.Context, id uint64) (*domain.User, error) {
+	return service.repo.Get(ctx, id)
+}
+
+func (s service) Update(ctx context.Context, id uint64, firstName, lastName, email *string) error {
+
+	if err := s.repo.Update(ctx, id, firstName, lastName, email); err != nil {
+		return err
+	}
+	return nil
 }

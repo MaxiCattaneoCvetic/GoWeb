@@ -7,6 +7,7 @@ package transport
 import (
 	"context"
 	"net/http"
+	"strings"
 )
 
 type Transport interface {
@@ -60,5 +61,22 @@ func (t *transport) Server(
 		encodeError(t.ctx, err, t.w)
 		return
 	}
+
+}
+
+// Esta funcion se encarga para limpiar la URL la usamos por ejemplo en el @PathVariable
+// recibe una URL com parametro y devuelve un array de strings + un int que es la cantidad
+func Clean(url string) ([]string, int) {
+
+	// Consultamos si la URL tiene el / luego del USERS
+	if url[0] != '/' {
+		url = "/" + url
+	}
+	if url[len(url)-1] != '/' {
+		url = url + "/"
+	}
+	//Separamos la url por /
+	parts := strings.Split(url, "/")
+	return parts, len(parts)
 
 }
